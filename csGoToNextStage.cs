@@ -4,7 +4,9 @@ using System.Collections;
 public class csGoToNextStage : MonoBehaviour {
 
 	public GameObject DoorEffect;
+	public csEricaItem AboutErica;
 	public csButtonController ButtonController;
+	public csDialogueFirstRoom DialogController;
 	public int StageNum;
 
 	private bool nextStage;
@@ -12,8 +14,10 @@ public class csGoToNextStage : MonoBehaviour {
 	void Start () {
 		nextStage = false;
 		DoorEffect = GameObject.Find ("DoorEffect");
+		AboutErica = GameObject.Find ("AboutErica").GetComponent<csEricaItem>();
 		DoorEffect.SetActive (false);
 		ButtonController = GameObject.Find ("ButtonController").GetComponent<csButtonController> ();
+		DialogController = GameObject.Find ("DialogController").GetComponent<csDialogueFirstRoom> ();
 	}
 	
 	// Update is called once per frame
@@ -28,7 +32,8 @@ public class csGoToNextStage : MonoBehaviour {
 		if (other.name == "Erica") {
 			DoorEffect.SetActive (true);
 			if(nextStage){
-				if(StageNum == 1) GoToForest();
+				if(StageNum == 1 && !AboutErica.MemoryBook) DialogController.dial_num = 2;
+				if(StageNum == 1 && AboutErica.MemoryBook) GoToForest();
 				if(StageNum == 2) GoToLoninHouse();
 				if(StageNum == 3) GoToFrameRoom();
 				if(StageNum == 4) GoToPoro();
