@@ -2,17 +2,20 @@
 using System.Collections;
 
 public class csPoro : MonoBehaviour {
+
     private float distance;
     private NavMeshAgent nma;
     private GameObject Erica;
     private Coroutine cou;
     private Animator anim;
+	private csMonsterStat myStat;
 	// Use this for initialization
 	void Start () {
 
         Erica = GameObject.Find("Erica");
         nma = this.GetComponent<NavMeshAgent>();
         anim = this.GetComponent<Animator>();
+		myStat = this.GetComponent<csMonsterStat> ();
 	//	
 	}
 	
@@ -32,6 +35,10 @@ public class csPoro : MonoBehaviour {
             nma.Stop();
         }
 
+		if (myStat.HP <= 0) {
+			anim.SetBool ("IsDead", true);
+			Invoke ("PoroDead",1.0f);
+		}
 	}
 
     IEnumerator Porowake()
@@ -43,7 +50,7 @@ public class csPoro : MonoBehaviour {
 
     void PoroRun()
     {
-        if (distance <= 2.0f)
+        if (distance <= 1.5f)
         {
             Debug.Log("distance 1.5!");
             nma.Stop();
@@ -66,4 +73,10 @@ public class csPoro : MonoBehaviour {
         StopCoroutine(cou);
         anim.SetBool("EricaInAttackArea", true);
     }
+
+	void PoroDead(){
+		Destroy (this.gameObject);
+	}
+
+
 }
